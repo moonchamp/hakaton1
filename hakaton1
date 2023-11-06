@@ -1,0 +1,77 @@
+import tkinter as tk
+from tkinter import messagebox
+
+class AbsoluteCodingApp:
+    def init(self, root):
+        self.root = root
+        self.root.title("Absolute Coding")
+        self.points = 0
+        self.tasks = {
+            "easy": ["Task 1 (Easy)", "Task 2 (Easy)", "Task 3 (Easy)"],
+            "normal": ["Task 1 (Normal)", "Task 2 (Normal)", "Task 3 (Normal)"],
+            "hard": ["Task 1 (Hard)", "Task 2 (Hard)", "Task 3 (Hard)"]
+        }
+        self.current_difficulty = tk.StringVar(value="easy")
+
+        # Welcome Page
+        tk.Label(root, text="Welcome to Absolute Coding!", font=("Arial", 16)).pack()
+        tk.Button(root, text="Start", command=self.show_main_page).pack()
+        tk.Label(root, text="").pack()
+
+    def show_main_page(self):
+        for widget in self.root.winfo_children():
+            widget.destroy()
+
+        # Main Page
+        tk.Label(self.root, text="Main Menu", font=("Arial", 16)).pack()
+        tk.Button(self.root, text="View and Complete Tasks", command=self.view_and_complete_tasks).pack()
+        tk.Button(self.root, text="App Settings", command=self.app_settings).pack()
+        tk.Button(self.root, text="FAQ", command=self.faq).pack()
+        tk.Button(self.root, text="Exit", command=self.root.quit).pack()
+        tk.Label(self.root, text="").pack()
+
+    def view_and_complete_tasks(self):
+        for widget in self.root.winfo_children():
+            widget.destroy()
+
+        # View and Complete Tasks
+        tk.Label(self.root, text="View and Complete Tasks", font=("Arial", 16)).pack()
+        tk.Label(self.root, text="Choose the difficulty level:").pack()
+        tk.Radiobutton(self.root, text="Easy", variable=self.current_difficulty, value="easy").pack()
+        tk.Radiobutton(self.root, text="Normal", variable=self.current_difficulty, value="normal").pack()
+        tk.Radiobutton(self.root, text="Hard", variable=self.current_difficulty, value="hard").pack()
+        tk.Button(self.root, text="Start Tasks", command=self.display_tasks).pack()
+        tk.Button(self.root, text="Go Back", command=self.show_main_page).pack()
+        tk.Label(self.root, text="").pack()
+
+    def display_tasks(self):
+        difficulty = self.current_difficulty.get()
+        for widget in self.root.winfo_children():
+            widget.destroy()
+
+        tk.Label(self.root, text=f"Available {difficulty} tasks", font=("Arial", 16)).pack()
+        for i, task in enumerate(self.tasks[difficulty], 1):
+            tk.Label(self.root, text=f"{i}. {task}").pack()
+            tk.Button(self.root, text=f"Complete Task {i}", command=lambda i=i: self.complete_task(i)).pack()
+        tk.Button(self.root, text="Go Back", command=self.view_and_complete_tasks).pack()
+        tk.Label(self.root, text="").pack()
+
+    def complete_task(self, task_index):
+        difficulty = self.current_difficulty.get()
+        points_earned = 10
+        self.points += points_earned
+        self.show_message(f"Task '{self.tasks[difficulty][task_index - 1]}' completed!\nYou've earned {points_earned} points.")
+
+    def app_settings(self):
+        self.show_message("App settings go here.")
+
+    def faq(self):
+        self.show_message("Frequently Asked Questions go here.")
+
+    def show_message(self, message):
+        messagebox.showinfo("Absolute Coding", message)
+
+if name == "main":
+    root = tk.Tk()
+    app = AbsoluteCodingApp(root)
+    root.mainloop()
